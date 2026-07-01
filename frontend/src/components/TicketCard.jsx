@@ -10,12 +10,15 @@ const statusConfig = {
   Resolved: { bg: "bg-green-100", text: "text-green-700", dot: "bg-success" },
 };
 
-export default function TicketCard({ ticket }) {
+export default function TicketCard({ ticket, onClick }) {
   const priority = priorityConfig[ticket.priority] || priorityConfig.Low;
   const status = statusConfig[ticket.status] || statusConfig.Open;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow duration-200">
+    <div
+      onClick={() => onClick?.(ticket)}
+      className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow duration-200 cursor-pointer"
+    >
       <div className="flex items-start justify-between mb-3">
         <h3 className="text-base font-semibold text-text leading-snug">
           {ticket.subject}
@@ -25,6 +28,9 @@ export default function TicketCard({ ticket }) {
           {ticket.priority}
         </span>
       </div>
+      {ticket.description && (
+        <p className="text-sm text-gray-500 mb-3 line-clamp-2">{ticket.description}</p>
+      )}
       <div className="flex items-center gap-3">
         <span className="text-xs text-gray-500 bg-gray-50 px-2 py-0.5 rounded-md">
           {ticket.category}
