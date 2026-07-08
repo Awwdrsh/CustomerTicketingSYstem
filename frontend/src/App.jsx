@@ -5,16 +5,26 @@ import TicketDetail from "./components/TicketDetail";
 import DashboardPage from "./pages/DashboardPage";
 import MyTicketsPage from "./pages/MyTicketsPage";
 import NewTicketPage from "./pages/NewTicketPage";
-import initialTickets from "./data/tickets";
-
-let nextId = initialTickets.length + 1;
-let nextCommentId = 200;
+import {
+  getAllTickets,
+  createTicket,
+  addComment as addCommentApi,
+} from "./services/ticketService";
 
 export default function App() {
-  const [tickets, setTickets] = useState(initialTickets);
+  const [tickets, setTickets] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [stats, setStats] = useState({ total: 0, open: 0, inProgress: 0, resolved: 0 });
+
+  useEffect(() => {
+    getAllTickets()
+      .then(setTickets)
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
     const total = tickets.length;
@@ -24,55 +34,33 @@ export default function App() {
     setStats({ total, open, inProgress, resolved });
   }, [tickets]);
 
-  const handleSubmitTicket = useCallback(({ subject, description, category, priority }) => {
-    const newTicket = {
-      id: nextId++,
-      subject,
-      description,
-      category,
-      priority,
-      status: "Open",
-      comments: [],
-      createdAt: new Date().toISOString().split("T")[0],
-    };
-    setTickets((prev) => [newTicket, ...prev]);
+  const handleSubmitTicket = useCallback(async ({ subject, description, category, priority }) => {
+    try {
+      const newTicket = await createTicket({ subject, description, category, priority });
+      setTickets((prev) => [newTicket, ...prev]);
+    } catch (err) {
+      setError(err.message);
+    }
   }, []);
 
-  const handleAddComment = useCallback((ticketId, text) => {
-    setTickets((prev) =>
-      prev.map((t) =>
-        t.id === ticketId
-          ? {
-              ...t,
-              comments: [
-                ...t.comments,
-                {
-                  id: nextCommentId++,
-                  author: "Customer",
-                  text,
-                  createdAt: new Date().toISOString(),
-                },
-              ],
-            }
-          : t
-      )
-    );
-    setSelectedTicket((prev) =>
-      prev && prev.id === ticketId
-        ? {
-            ...prev,
-            comments: [
-              ...prev.comments,
-              {
-                id: nextCommentId - 1,
-                author: "Customer",
-                text,
-                createdAt: new Date().toISOString(),
-              },
-            ],
-          }
-        : prev
-    );
+  const handleAddComment = useCallback(async (ticketId, text) => {
+    try {
+      const newComment = await addCommentApi(ticketId, text);
+      setTickets((prev) =>
+        prev.map((t) =>
+          t.id === ticketId
+            ? { ...t, comments: [...t.comments, newComment] }
+            : t
+        )
+      );
+      setSelectedTicket((prev) =>
+        prev && prev.id === ticketId
+          ? { ...prev, comments: [...prev.comments, newComment] }
+          : prev
+      );
+    } catch (err) {
+      setError(err.message);
+    }
   }, []);
 
   return (
@@ -86,6 +74,8 @@ export default function App() {
               <DashboardPage
                 tickets={{ ...stats, all: tickets }}
                 onSelectTicket={setSelectedTicket}
+                loading={loading}
+                error={error}
               />
             }
           />
@@ -95,6 +85,8 @@ export default function App() {
               <MyTicketsPage
                 tickets={tickets}
                 onSelectTicket={setSelectedTicket}
+                loading={loading}
+                error={error}
               />
             }
           />
