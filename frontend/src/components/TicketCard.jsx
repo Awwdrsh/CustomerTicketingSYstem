@@ -1,52 +1,53 @@
-const priorityConfig = {
-  High: { bg: "bg-red-100", text: "text-red-700", dot: "bg-danger" },
-  Medium: { bg: "bg-orange-100", text: "text-orange-700", dot: "bg-warning" },
-  Low: { bg: "bg-gray-100", text: "text-gray-600", dot: "bg-gray-400" },
-};
+import { PRIORITY_COLORS, STATUS_COLORS } from "../utils/constants";
 
-const statusConfig = {
-  Open: { bg: "bg-blue-100", text: "text-blue-700", dot: "bg-blue-500" },
-  "In Progress": { bg: "bg-amber-100", text: "text-amber-700", dot: "bg-warning" },
-  Resolved: { bg: "bg-green-100", text: "text-green-700", dot: "bg-success" },
-};
+function timeAgo(date) {
+  const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+  if (seconds < 60) return "just now";
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}d ago`;
+  return new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
 
-export default function TicketCard({ ticket, onClick }) {
-  const priority = priorityConfig[ticket.priority] || priorityConfig.Low;
-  const status = statusConfig[ticket.status] || statusConfig.Open;
+export default function TicketCard({ ticket, onClick, compact = false }) {
+  const priority = PRIORITY_COLORS[ticket.priority] || PRIORITY_COLORS.Low;
+  const status = STATUS_COLORS[ticket.status] || STATUS_COLORS.Open;
 
   return (
-    <div
+    <button
+      type="button"
       onClick={() => onClick?.(ticket)}
-      className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow duration-200 cursor-pointer"
+      className="w-full text-left bg-white rounded-2xl border border-slate-100 p-5 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-500/5 transition-all duration-300 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-300"
     >
-      <div className="flex items-start justify-between mb-3">
-        <h3 className="text-base font-semibold text-text leading-snug">
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <h3 className="text-sm font-semibold text-slate-900 leading-snug group-hover:text-violet-700 transition-colors line-clamp-2">
           {ticket.subject}
         </h3>
-        <span className={`ml-3 shrink-0 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${priority.bg} ${priority.text}`}>
+        <span className={`shrink-0 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[11px] font-semibold tracking-wide ${priority.bg} ${priority.text}`}>
           <span className={`w-1.5 h-1.5 rounded-full ${priority.dot}`} />
           {ticket.priority}
         </span>
       </div>
-      {ticket.description && (
-        <p className="text-sm text-gray-500 mb-3 line-clamp-2">{ticket.description}</p>
+
+      {!compact && ticket.description && (
+        <p className="text-xs text-slate-500 mb-3 line-clamp-2 leading-relaxed">{ticket.description}</p>
       )}
-      <div className="flex items-center gap-3">
-        <span className="text-xs text-gray-500 bg-gray-50 px-2 py-0.5 rounded-md">
+
+      <div className="flex items-center gap-2">
+        <span className="text-[11px] font-medium text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md">
           {ticket.category}
         </span>
-        <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${status.bg} ${status.text}`}>
+        <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[11px] font-semibold tracking-wide ${status.bg} ${status.text}`}>
           <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} />
           {ticket.status}
         </span>
-        <span className="text-xs text-gray-400 ml-auto">
-          {new Date(ticket.createdAt).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })}
+        <span className="text-[11px] text-slate-400 ml-auto tabular-nums">
+          {timeAgo(ticket.createdAt)}
         </span>
       </div>
-    </div>
+    </button>
   );
 }

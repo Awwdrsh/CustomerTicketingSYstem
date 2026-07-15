@@ -1,20 +1,77 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #6366F1;
-  --color-primary-dark: #4F46E5;
-  --color-primary-light: #818CF8;
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-danger: #EF4444;
-  --color-bg: #F5F3FF;
-  --color-text: #1E1B4B;
+  --color-primary: #7C3AED;
+  --color-primary-dark: #6D28D9;
+  --color-primary-light: #A78BFA;
+  --color-surface: #FFFFFF;
+  --color-surface-elevated: #F8FAFC;
+  --color-bg: #F1F5F9;
+  --color-text: #0F172A;
+  --color-text-secondary: #64748B;
+  --color-border: #E2E8F0;
+  --color-border-subtle: #F1F5F9;
 }
 
 @layer base {
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
+
+  ::selection {
+    background-color: #7C3AED20;
+    color: #0F172A;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.25s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
