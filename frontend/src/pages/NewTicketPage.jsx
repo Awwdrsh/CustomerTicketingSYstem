@@ -1,13 +1,25 @@
+import { useNavigate } from "react-router-dom";
 import NewTicketForm from "../components/NewTicketForm";
+import { useTickets } from "../context/TicketContext";
 
-export default function NewTicketPage({ onSubmitTicket }) {
+export default function NewTicketPage() {
+  const { handleSubmitTicket } = useTickets();
+  const navigate = useNavigate();
+
+  async function handleCreate(data) {
+    await handleSubmitTicket(data);
+    navigate("/");
+  }
+
   return (
-    <main className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-text">New Ticket</h1>
-        <p className="text-gray-500 mt-1">Submit a new support request</p>
+        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">New Ticket</h1>
+        <p className="text-sm text-slate-500 mt-1">Submit a new support request</p>
       </div>
-      <NewTicketForm onSubmit={onSubmitTicket} />
-    </main>
+      <div className="bg-white rounded-2xl border border-slate-100 p-6">
+        <NewTicketForm onSubmit={handleCreate} />
+      </div>
+    </div>
   );
 }

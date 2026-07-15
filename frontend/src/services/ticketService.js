@@ -1,29 +1,36 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "/api",
+  baseURL: import.meta.env.VITE_API_URL || "/api",
 });
 
-export function getAllTickets() {
-  return api.get("/tickets").then((res) => res.data);
+export function getAllTickets(filters = {}, { signal } = {}) {
+  const params = {};
+  if (filters.status) params.status = filters.status;
+  if (filters.category) params.category = filters.category;
+  return api.get("/tickets", { params, signal }).then((res) => res.data);
 }
 
-export function getTicket(id) {
-  return api.get(`/tickets/${id}`).then((res) => res.data);
+export function getTicket(id, { signal } = {}) {
+  return api.get(`/tickets/${id}`, { signal }).then((res) => res.data);
 }
 
-export function createTicket(data) {
-  return api.post("/tickets", data).then((res) => res.data);
+export function createTicket(data, { signal } = {}) {
+  return api.post("/tickets", data, { signal }).then((res) => res.data);
 }
 
-export function updateTicket(id, data) {
-  return api.put(`/tickets/${id}`, data).then((res) => res.data);
+export function updateTicket(id, data, { signal } = {}) {
+  return api.put(`/tickets/${id}`, data, { signal }).then((res) => res.data);
 }
 
-export function deleteTicket(id) {
-  return api.delete(`/tickets/${id}`);
+export function deleteTicket(id, { signal } = {}) {
+  return api.delete(`/tickets/${id}`, { signal });
 }
 
-export function addComment(id, text, author = "Customer") {
-  return api.post(`/tickets/${id}/comments`, { text, author }).then((res) => res.data);
+export function addComment(id, text, author = "Customer", { signal } = {}) {
+  return api.post(`/tickets/${id}/comments`, { text, author }, { signal }).then((res) => res.data);
+}
+
+export function getTicketStats({ signal } = {}) {
+  return api.get("/tickets/stats", { signal }).then((res) => res.data);
 }
