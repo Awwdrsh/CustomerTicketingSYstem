@@ -3,6 +3,7 @@ import cors from "cors";
 import config from "./config/index.js";
 import connectDB from "./config/db.js";
 import ticketRoutes from "./routes/ticketRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(cors({
 }));
 app.use(express.json({ limit: "100kb" }));
 
+app.use("/api/auth", authRoutes);
 app.use("/api/tickets", ticketRoutes);
 
 app.use("/api", (_req, res) => {

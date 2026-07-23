@@ -14,15 +14,18 @@ import {
   updateTicketValidationRules,
   validate,
 } from "../validators/ticketValidators.js";
+import { authenticate, authorize } from "../middleware/auth.js";
 
 const router = Router();
+
+router.use(authenticate);
 
 router.get("/stats", getTicketStats);
 router.get("/", getTickets);
 router.get("/:id", getTicket);
 router.post("/", ticketValidationRules, validate, createTicket);
 router.put("/:id", updateTicketValidationRules, validate, updateTicket);
-router.delete("/:id", deleteTicket);
+router.delete("/:id", authorize("admin"), deleteTicket);
 router.post("/:id/comments", commentValidationRules, validate, addComment);
 
 export default router;

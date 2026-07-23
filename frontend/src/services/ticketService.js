@@ -1,8 +1,4 @@
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "/api",
-});
+import api from "./api";
 
 export function getAllTickets(filters = {}, { signal } = {}) {
   const params = {};
@@ -27,8 +23,8 @@ export function deleteTicket(id, { signal } = {}) {
   return api.delete(`/tickets/${id}`, { signal });
 }
 
-export function addComment(id, text, author = "Customer", { signal } = {}) {
-  return api.post(`/tickets/${id}/comments`, { text, author }, { signal }).then((res) => res.data);
+export function addComment(id, text, { signal } = {}) {
+  return api.post(`/tickets/${id}/comments`, { text }, { signal }).then((res) => res.data);
 }
 
 export function getTicketStats({ signal } = {}) {

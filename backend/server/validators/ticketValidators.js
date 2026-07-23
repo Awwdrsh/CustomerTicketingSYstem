@@ -18,6 +18,7 @@ const updateTicketValidationRules = [
   body("category").optional().isIn(CATEGORIES).withMessage("Invalid category"),
   body("priority").optional().isIn(PRIORITIES).withMessage("Invalid priority"),
   body("status").optional().isIn(STATUSES).withMessage("Invalid status"),
+  body("assignedTo").optional().isMongoId().withMessage("Invalid user ID"),
 ];
 
 const validate = (req, res, next) => {
