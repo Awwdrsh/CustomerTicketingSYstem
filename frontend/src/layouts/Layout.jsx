@@ -5,7 +5,7 @@ export default function Layout() {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-bg">
+    <div className="min-h-screen bg-bg dark:bg-slate-900">
       <Navbar />
       <main className="animate-fade-in" key={location.pathname}>
         <Outlet />

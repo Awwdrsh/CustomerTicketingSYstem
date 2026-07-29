@@ -2,8 +2,10 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { TicketProvider } from "./context/TicketContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import Layout from "./layouts/Layout";
 import TicketDetail from "./components/TicketDetail";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { Spinner } from "./components/FeedbackStates";
 import { useTickets } from "./context/TicketContext";
 
@@ -30,7 +32,8 @@ function GuestRoute({ children }) {
 }
 
 function AppRoutes() {
-  const { selectedTicket, setSelectedTicket, handleAddComment } = useTickets();
+  const { user } = useAuth();
+  const { selectedTicket, setSelectedTicket, handleAddComment, handleUpdateStatus } = useTickets();
 
   return (
     <>
@@ -56,7 +59,9 @@ function AppRoutes() {
       {selectedTicket && (
         <TicketDetail
           ticket={selectedTicket}
+          user={user}
           onAddComment={handleAddComment}
+          onUpdateStatus={handleUpdateStatus}
           onClose={() => setSelectedTicket(null)}
         />
       )}
@@ -67,11 +72,15 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <TicketProvider>
-          <AppRoutes />
-        </TicketProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <TicketProvider>
+            <ErrorBoundary>
+              <AppRoutes />
+            </ErrorBoundary>
+          </TicketProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

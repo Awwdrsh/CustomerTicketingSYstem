@@ -47,57 +47,61 @@ export default function NewTicketForm({ onSubmit }) {
     }
   }
 
+  const inputClass = "w-full px-4 py-2.5 rounded-xl border border-border dark:border-slate-700 text-sm bg-surface dark:bg-slate-800 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 dark:focus:border-violet-400 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500";
+  const labelClass = "block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5";
+  const errorClass = "text-xs text-red-500 dark:text-red-400 mt-1";
+
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label htmlFor="subject" className="block text-sm font-medium text-slate-700 mb-1.5">Subject</label>
+        <label htmlFor="subject" className={labelClass}>Subject</label>
         <input
           id="subject"
           type="text"
           name="subject"
           value={form.subject}
           onChange={handleChange}
-          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-slate-400"
+          className={inputClass}
           placeholder="Brief summary of the issue"
         />
-        {errors.subject && <p className="text-xs text-red-500 mt-1">{errors.subject}</p>}
+        {errors.subject && <p className={errorClass}>{errors.subject}</p>}
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-slate-700 mb-1.5">Description</label>
+        <label htmlFor="description" className={labelClass}>Description</label>
         <textarea
           id="description"
           name="description"
           value={form.description}
           onChange={handleChange}
           rows={4}
-          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all placeholder:text-slate-400 resize-none"
+          className={`${inputClass} resize-none`}
           placeholder="Detailed description of the issue"
         />
-        {errors.description && <p className="text-xs text-red-500 mt-1">{errors.description}</p>}
+        {errors.description && <p className={errorClass}>{errors.description}</p>}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="category" className="block text-sm font-medium text-slate-700 mb-1.5">Category</label>
-          <select id="category" name="category" value={form.category} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all">
+          <label htmlFor="category" className={labelClass}>Category</label>
+          <select id="category" name="category" value={form.category} onChange={handleChange} className={inputClass}>
             <option value="">Select category</option>
             {CATEGORIES.map((cat) => (
               <option key={cat} value={cat}>{cat}</option>
             ))}
           </select>
-          {errors.category && <p className="text-xs text-red-500 mt-1">{errors.category}</p>}
+          {errors.category && <p className={errorClass}>{errors.category}</p>}
         </div>
 
         <div>
-          <label htmlFor="priority" className="block text-sm font-medium text-slate-700 mb-1.5">Priority</label>
-          <select id="priority" name="priority" value={form.priority} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all">
+          <label htmlFor="priority" className={labelClass}>Priority</label>
+          <select id="priority" name="priority" value={form.priority} onChange={handleChange} className={inputClass}>
             <option value="">Select priority</option>
             {PRIORITIES.map((p) => (
               <option key={p} value={p}>{p}</option>
             ))}
           </select>
-          {errors.priority && <p className="text-xs text-red-500 mt-1">{errors.priority}</p>}
+          {errors.priority && <p className={errorClass}>{errors.priority}</p>}
         </div>
       </div>
 

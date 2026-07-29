@@ -13,8 +13,8 @@ export default function DashboardPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
-        <p className="text-sm text-slate-500 mt-1">Track and manage support tickets</p>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Dashboard</h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Track and manage support tickets</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
@@ -27,7 +27,7 @@ export default function DashboardPage() {
       <FilterBar filters={filters} onFilterChange={setFilters} />
 
       <div>
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Recent Tickets</h2>
+        <h2 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Recent Tickets</h2>
         <TicketList tickets={tickets} onSelectTicket={setSelectedTicket} />
       </div>
     </div>

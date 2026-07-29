@@ -30,3 +30,7 @@ export function addComment(id, text, { signal } = {}) {
 export function getTicketStats({ signal } = {}) {
   return api.get("/tickets/stats", { signal }).then((res) => res.data);
 }
+
+export function suggestReply(ticketId, { signal } = {}) {
+  return api.get(`/ai/suggest-reply/${ticketId}`, { signal }).then((res) => res.data);
+}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 
 const navLinks = [
   { to: "/", label: "Dashboard", icon: "M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" },
@@ -11,9 +12,10 @@ const navLinks = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <nav className="glass-strong border-b border-border sticky top-0 z-40">
+    <nav className="glass-strong dark:glass-strong-dark border-b border-border dark:border-slate-700/50 sticky top-0 z-40">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-2.5">
@@ -22,7 +24,7 @@ export default function Navbar() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
               </svg>
             </div>
-            <span className="text-lg font-bold tracking-tight text-slate-900">HelpDeskLite</span>
+            <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100">HelpDeskLite</span>
           </div>
 
           <div className="hidden sm:flex items-center gap-1">
@@ -34,8 +36,8 @@ export default function Navbar() {
                 className={({ isActive }) =>
                   `flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? "bg-violet-50 text-violet-700 shadow-sm"
-                      : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                      ? "bg-violet-50 dark:bg-violet-500/15 text-violet-700 dark:text-violet-400 shadow-sm"
+                      : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                   }`
                 }
               >
@@ -50,19 +52,36 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             {user && (
               <div className="hidden sm:flex items-center gap-3">
-                <span className="text-xs text-slate-400">
-                  {user.name} <span className="text-slate-300">·</span> <span className="capitalize">{user.role}</span>
+                <span className="text-xs text-slate-400 dark:text-slate-500">
+                  {user.name} <span className="text-slate-300 dark:text-slate-600">·</span>{" "}
+                  <span className="capitalize">{user.role}</span>
                 </span>
                 <button onClick={logout}
-                  className="text-xs font-medium text-slate-400 hover:text-red-500 transition-colors px-2 py-1 rounded-lg hover:bg-red-50">
+                  className="text-xs font-medium text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 transition-colors px-2 py-1 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
                   Sign out
                 </button>
               </div>
             )}
 
             <button
+              onClick={toggleTheme}
+              className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            >
+              {theme === "dark" ? (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+              )}
+            </button>
+
+            <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="sm:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 transition-colors"
+              className="sm:hidden p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               aria-label="Toggle menu"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -87,8 +106,8 @@ export default function Navbar() {
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? "bg-violet-50 text-violet-700"
-                      : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                      ? "bg-violet-50 dark:bg-violet-500/15 text-violet-700 dark:text-violet-400"
+                      : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                   }`
                 }
               >
@@ -99,10 +118,10 @@ export default function Navbar() {
               </NavLink>
             ))}
             {user && (
-              <div className="mt-3 pt-3 border-t border-slate-100 px-4 flex items-center justify-between">
-                <span className="text-xs text-slate-500">{user.email}</span>
+              <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/50 px-4 flex items-center justify-between">
+                <span className="text-xs text-slate-500 dark:text-slate-400">{user.email}</span>
                 <button onClick={logout}
-                  className="text-xs font-medium text-red-500 hover:text-red-600 transition-colors">
+                  className="text-xs font-medium text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 transition-colors">
                   Sign out
                 </button>
               </div>

@@ -41,8 +41,10 @@ export default function RegisterPage() {
     }
   }
 
+  const inputClass = "w-full px-4 py-2.5 rounded-xl border border-border dark:border-slate-700 text-sm bg-surface dark:bg-slate-800 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 dark:focus:border-violet-400 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500";
+
   return (
-    <div className="min-h-screen bg-bg flex items-center justify-center px-4">
+    <div className="min-h-screen bg-bg dark:bg-slate-900 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-violet-700 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-violet-500/25">
@@ -50,40 +52,40 @@ export default function RegisterPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
             </svg>
           </div>
-          <h1 className="text-xl font-bold text-slate-900">Create account</h1>
-          <p className="text-sm text-slate-500 mt-1">Get started with HelpDeskLite</p>
+          <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Create account</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Get started with HelpDeskLite</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-100 p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-surface dark:bg-slate-800/50 rounded-2xl border border-border dark:border-slate-700/50 p-6 space-y-4">
           {error && (
-            <div className="text-xs text-red-600 bg-red-50 rounded-xl px-4 py-3">{error}</div>
+            <div className="text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-xl px-4 py-3">{error}</div>
           )}
 
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1.5">Name</label>
+            <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Name</label>
             <input id="name" type="text" name="name" value={form.name} onChange={handleChange}
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all"
+              className={inputClass}
               placeholder="Your name" />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Email</label>
             <input id="email" type="email" name="email" value={form.email} onChange={handleChange}
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all"
+              className={inputClass}
               placeholder="you@example.com" />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
             <input id="password" type="password" name="password" value={form.password} onChange={handleChange}
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all"
+              className={inputClass}
               placeholder="At least 6 characters" />
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1.5">Confirm Password</label>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Confirm Password</label>
             <input id="confirmPassword" type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange}
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all"
+              className={inputClass}
               placeholder="Repeat your password" />
           </div>
 
@@ -94,9 +96,9 @@ export default function RegisterPage() {
             ) : "Create account"}
           </button>
 
-          <p className="text-xs text-slate-500 text-center">
+          <p className="text-xs text-slate-500 dark:text-slate-400 text-center">
             Already have an account?{" "}
-            <Link to="/login" className="text-violet-600 font-semibold hover:text-violet-700">Sign in</Link>
+            <Link to="/login" className="text-violet-600 dark:text-violet-400 font-semibold hover:text-violet-700 dark:hover:text-violet-300">Sign in</Link>
           </p>
         </form>
       </div>

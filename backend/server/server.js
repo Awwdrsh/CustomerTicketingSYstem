@@ -4,6 +4,7 @@ import config from "./config/index.js";
 import connectDB from "./config/db.js";
 import ticketRoutes from "./routes/ticketRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
 import { getConnectionStatus } from "./config/db.js";
 
@@ -29,6 +30,7 @@ app.get('/health', (_req, res) => {
 }); 
 app.use("/api/auth", authRoutes);
 app.use("/api/tickets", ticketRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.use("/api", (_req, res) => {
   res.status(404).json({ error: "API endpoint not found" });

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: #7C3AED;
   --color-primary-dark: #6D28D9;
@@ -29,6 +31,11 @@
     background-color: #7C3AED20;
     color: #0F172A;
   }
+
+  .dark ::selection {
+    background-color: #A78BFA30;
+    color: #F1F5F9;
+  }
 }
 
 @layer utilities {
@@ -38,10 +45,18 @@
     -webkit-backdrop-filter: blur(12px);
   }
 
+  .dark .glass {
+    background: rgba(30, 41, 59, 0.7);
+  }
+
   .glass-strong {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+  }
+
+  .dark .glass-strong {
+    background: rgba(30, 41, 59, 0.85);
   }
 
   .animate-fade-in {

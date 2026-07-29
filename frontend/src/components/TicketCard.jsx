@@ -20,31 +20,31 @@ export default function TicketCard({ ticket, onClick, compact = false }) {
     <button
       type="button"
       onClick={() => onClick?.(ticket)}
-      className="w-full text-left bg-white rounded-2xl border border-slate-100 p-5 hover:border-violet-200 hover:shadow-lg hover:shadow-violet-500/5 transition-all duration-300 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-300"
+      className="w-full text-left bg-surface dark:bg-slate-800/50 rounded-2xl border border-border dark:border-slate-700/50 p-5 hover:border-violet-200 dark:hover:border-violet-500/30 hover:shadow-lg hover:shadow-violet-500/5 dark:hover:shadow-violet-500/10 transition-all duration-300 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-300"
     >
       <div className="flex items-start justify-between gap-3 mb-3">
-        <h3 className="text-sm font-semibold text-slate-900 leading-snug group-hover:text-violet-700 transition-colors line-clamp-2">
+        <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-snug group-hover:text-violet-700 dark:group-hover:text-violet-400 transition-colors line-clamp-2">
           {ticket.subject}
         </h3>
-        <span className={`shrink-0 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[11px] font-semibold tracking-wide ${priority.bg} ${priority.text}`}>
+        <span className={`shrink-0 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[11px] font-semibold tracking-wide ${priority.bg} ${priority.text} ${priority.darkBg} ${priority.darkText}`}>
           <span className={`w-1.5 h-1.5 rounded-full ${priority.dot}`} />
           {ticket.priority}
         </span>
       </div>
 
       {!compact && ticket.description && (
-        <p className="text-xs text-slate-500 mb-3 line-clamp-2 leading-relaxed">{ticket.description}</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 line-clamp-2 leading-relaxed">{ticket.description}</p>
       )}
 
       <div className="flex items-center gap-2">
-        <span className="text-[11px] font-medium text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md">
+        <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded-md">
           {ticket.category}
         </span>
-        <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[11px] font-semibold tracking-wide ${status.bg} ${status.text}`}>
+        <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[11px] font-semibold tracking-wide ${status.bg} ${status.text} ${status.darkBg} ${status.darkText}`}>
           <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} />
           {ticket.status}
         </span>
-        <span className="text-[11px] text-slate-400 ml-auto tabular-nums">
+        <span className="text-[11px] text-slate-400 dark:text-slate-500 ml-auto tabular-nums">
           {timeAgo(ticket.createdAt)}
         </span>
       </div>

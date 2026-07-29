@@ -4,6 +4,7 @@ import {
   createTicket,
   addComment as addCommentApi,
   getTicketStats,
+  updateTicket as updateTicketApi,
 } from "../services/ticketService";
 import { useAuth } from "./AuthContext";
 
@@ -72,6 +73,18 @@ export function TicketProvider({ children }) {
     return newComment;
   }, []);
 
+  const handleUpdateStatus = useCallback(async (ticketId, status) => {
+    const updated = await updateTicketApi(ticketId, { status });
+    setTickets((prev) =>
+      prev.map((t) => (t._id === ticketId ? { ...t, ...updated } : t))
+    );
+    setSelectedTicket((prev) =>
+      prev && prev._id === ticketId ? { ...prev, ...updated } : prev
+    );
+    fetchStats();
+    return updated;
+  }, [fetchStats]);
+
   const refetch = useCallback(() => {
     fetchTickets();
     fetchStats();
@@ -90,6 +103,7 @@ export function TicketProvider({ children }) {
         setFilters,
         handleSubmitTicket,
         handleAddComment,
+        handleUpdateStatus,
         refetch,
       }}
     >
