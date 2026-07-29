@@ -24,6 +24,9 @@ app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", db: getConnectionStatus() ? "connected" : "disconnected" });
 });
 
+app.get('/health', (_req, res) => {
+  res.json({ status: "ok", db: getConnectionStatus() ? "connected" : "disconnected" });
+}); 
 app.use("/api/auth", authRoutes);
 app.use("/api/tickets", ticketRoutes);
 
