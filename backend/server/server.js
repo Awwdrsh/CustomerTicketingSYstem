@@ -5,16 +5,24 @@ import connectDB from "./config/db.js";
 import ticketRoutes from "./routes/ticketRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
+import { getConnectionStatus } from "./config/db.js";
 
 const app = express();
 
 app.use(cors({
-  origin: config.corsOrigin,
+  origin: (origin, cb) => {
+    if (!origin || config.corsOrigin.includes(origin)) cb(null, true);
+    else cb(null, false);
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 app.use(express.json({ limit: "100kb" }));
+
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok", db: getConnectionStatus() ? "connected" : "disconnected" });
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/tickets", ticketRoutes);
