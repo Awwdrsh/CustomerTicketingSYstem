@@ -3,7 +3,7 @@ import config from "../config/index.js";
 import User from "../models/User.js";
 
 export async function authenticate(req, res, next) {
-  const header = req.headers.authorization;
+  const header = req.cookie.jwt || req.headers.authorization;
   if (!header?.startsWith("Bearer "))
     return res.status(401).json({ error: "Authentication required" });
 

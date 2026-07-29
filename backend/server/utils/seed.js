@@ -20,6 +20,7 @@ const seedTickets = [
       { author: "Support Agent", text: "Could you please try logging in from an incognito window?" },
     ],
     createdAt: new Date("2026-06-20"),
+    owner: "customer",
   },
   {
     subject: "Payment not reflected in billing history",
@@ -32,6 +33,7 @@ const seedTickets = [
       { author: "Customer", text: "Sure, the transaction ID is TXN-987654321." },
     ],
     createdAt: new Date("2026-06-21"),
+    owner: "customer",
   },
   {
     subject: "Feature request: Dark mode support",
@@ -41,6 +43,7 @@ const seedTickets = [
     status: "Open",
     comments: [],
     createdAt: new Date("2026-06-22"),
+    owner: "customer",
   },
   {
     subject: "Email notifications not being delivered",
@@ -52,6 +55,7 @@ const seedTickets = [
       { author: "Support Agent", text: "We have identified an issue with our email delivery service." },
     ],
     createdAt: new Date("2026-06-23"),
+    owner: "agent",
   },
   {
     subject: "Login page crashes on Safari browser",
@@ -64,41 +68,61 @@ const seedTickets = [
       { author: "Customer", text: "Confirmed working now. Thank you!" },
     ],
     createdAt: new Date("2026-06-24"),
+    owner: "agent",
   },
 ];
 
 async function seed() {
   try {
-    await mongoose.connect(config.mongoUri);
-    console.log("Connected to MongoDB");
+    await mongoose.connect(config.mongoUri, { serverSelectionTimeoutMS: 5000 });
+    console.log("Connected to MongoDB\n");
 
     await User.deleteMany({});
     await Ticket.deleteMany({});
-    console.log("Cleared existing data");
+    console.log("Cleared existing data\n");
 
     const createdUsers = await User.create(users);
-    console.log(`Seeded ${createdUsers.length} users`);
-
     const customer = createdUsers.find((u) => u.role === "customer");
     const agent = createdUsers.find((u) => u.role === "agent");
+    const admin = createdUsers.find((u) => u.role === "admin");
 
-    const ticketsWithUsers = seedTickets.map((t, i) => ({
-      ...t,
-      createdBy: i < 3 ? customer._id : agent._id,
-      assignedTo: i % 2 === 0 ? agent._id : null,
+    console.log("=== Users Created ===");
+    for (const u of createdUsers) {
+      console.log(`  ${u.role.padEnd(10)} ${u.email.padEnd(30)} ${u.name}`);
+    }
+
+    const ticketsWithUsers = seedTickets.map((t) => ({
+      subject: t.subject,
+      description: t.description,
+      category: t.category,
+      priority: t.priority,
+      status: t.status,
+      comments: t.comments,
+      createdAt: t.createdAt,
+      createdBy: t.owner === "customer" ? customer._id : agent._id,
+      assignedTo: agent._id,
     }));
 
     await Ticket.insertMany(ticketsWithUsers);
-    console.log(`Seeded ${seedTickets.length} tickets`);
 
-    console.log("\n--- Login Credentials ---");
-    for (const u of users) {
-      console.log(`  ${u.role}: ${u.email} / ${u.password}`);
+    console.log("\n=== Tickets Created ===");
+    for (let i = 0; i < seedTickets.length; i++) {
+      const t = seedTickets[i];
+      const owner = t.owner === "customer" ? customer : agent;
+      console.log(`  ${(i + 1) + "."} ${t.subject.slice(0, 50).padEnd(52)} [${t.status.padEnd(12)}] created by ${owner.name}`);
     }
+
+    console.log("\n========================================");
+    console.log("        LOGIN CREDENTIALS");
+    console.log("========================================");
+    console.log(`  ${"CUSTOMER".padEnd(12)} alice@example.com    / password123`);
+    console.log(`  ${"AGENT".padEnd(12)} bob@example.com       / password123`);
+    console.log(`  ${"ADMIN".padEnd(12)} carol@example.com     / password123`);
+    console.log("========================================\n");
 
     process.exit(0);
   } catch (error) {
-    console.error("Seed error:", error);
+    console.error("\nSeed failed:", error.message);
     process.exit(1);
   }
 }
