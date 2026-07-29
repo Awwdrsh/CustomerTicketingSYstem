@@ -5,14 +5,16 @@ import {
   addComment as addCommentApi,
   getTicketStats,
 } from "../services/ticketService";
+import { useAuth } from "./AuthContext";
 
 const TicketContext = createContext(null);
 
 export function TicketProvider({ children }) {
+  const { user } = useAuth();
   const [tickets, setTickets] = useState([]);
   const [stats, setStats] = useState({ total: 0, open: 0, inProgress: 0, resolved: 0 });
   const [selectedTicket, setSelectedTicket] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({ status: "", category: "" });
 
@@ -39,11 +41,12 @@ export function TicketProvider({ children }) {
   }, [filters]);
 
   useEffect(() => {
+    if (!user) return;
     const controller = new AbortController();
     fetchTickets(controller.signal);
     fetchStats(controller.signal);
     return () => controller.abort();
-  }, [fetchTickets, fetchStats]);
+  }, [fetchTickets, fetchStats, user]);
 
   const handleSubmitTicket = useCallback(async ({ subject, description, category, priority }) => {
     const newTicket = await createTicket({ subject, description, category, priority });

@@ -23,5 +23,3 @@ export function getConnectionStatus() {
 }
 
 export default connectDB;
-
-export default connectDB;

@@ -15,7 +15,12 @@ export function setAuthToken(token) {
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401 && !err.config.url.includes("/auth/")) {
+    if (
+      err.response?.status === 401 &&
+      !err.config.url.includes("/auth/") &&
+      !window.location.pathname.startsWith("/login") &&
+      !window.location.pathname.startsWith("/register")
+    ) {
       localStorage.removeItem("token");
       setAuthToken(null);
       window.location.href = "/login";
