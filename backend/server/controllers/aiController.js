@@ -1,5 +1,5 @@
 import Ticket from "../models/Ticket.js";
-import { suggestReply } from "../services/gemini.js";
+import { suggestReply } from "../services/openrouter.js";
 
 export async function suggestReplyHandler(req, res, next) {
   try {

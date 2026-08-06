@@ -206,4 +206,4 @@ In development, the Vite dev server proxies `/api` requests to `http://localhost
 | 4 | MongoDB Atlas persistence | ✅ |
 | 5 | Authentication & Authorization | ✅ |
 | 6 | Deployment & CI/CD | ✅ |
-| 7 | AI-powered reply generator (Gemini API) | ⏳ |
+| 7 | AI-powered reply generator (OpenRouter) | ✅ |
