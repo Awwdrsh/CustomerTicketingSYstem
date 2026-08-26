@@ -1,11 +1,12 @@
 services:
   - type: web
     name: helpdesklite-api
-    env: node
+    runtime: node
     region: oregon
     rootDir: backend
     buildCommand: npm install
     startCommand: npm start
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
         value: 22
